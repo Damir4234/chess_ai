@@ -17,7 +17,8 @@ class Pawn(Figure):
         
         super().__init__(color, position)
         self.was_move = False
-
+        self.check_start_position()
+    
     
     def move(self, future_position): # получает позицию на которую хотят перместить 
 
@@ -75,6 +76,27 @@ class Pawn(Figure):
 
             
             return future_position in possible_moves
+
+
+    def check_start_position(self):
+        
+        if self.color == "white":
+
+            if self.position[1] == 2:
+                
+                return
+            
+            self.was_move = True
+
+        elif self.color == "black":
+
+            if self.position[1] == 7:
+                
+                return
+
+            self.was_move = True
+
+
 
     def __repr__(self):
 
