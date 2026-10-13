@@ -78,5 +78,5 @@ class Pawn(Figure):
 
     def __repr__(self):
 
-        return f"Пешка {self.color}, позиция: {self.position}"
+        return f"(Пешка {self.color}, позиция: {self.position})"
 
