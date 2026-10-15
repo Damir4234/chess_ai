@@ -1,3 +1,6 @@
+from figure import Pawn
+
+
 class Board:
 
     def __init__(self):
@@ -26,27 +29,63 @@ class Board:
 
         if all(1 <= i <= 8 for i in initial_coordinates) and all(1 <= i <= 8 for i in final_coordinates):
 
+            figure_on_final_coordinates = next((i for i in self.figures if i.position == final_coordinates), None)
+
             for i in self.figures:
 
                 if i.position == initial_coordinates:
 
-                    if i.move(final_coordinates):
+                    if isinstance(i, Pawn):
 
-                        i.position = final_coordinates
-                        print("Позиция измененна")
+                        if i.move(final_coordinates):
 
-                    else:
+                            if i.position[0] == final_coordinates[0]:
 
-                        print("Перемещение не допустимо")
+                                if figure_on_final_coordinates != None:
 
-                # else:
+                                    print("Это поле занято")
 
-                #     print("Эта позиция пустая")
+                                elif self.is_path_clear(initial_coordinates, final_coordinates):
 
-        else:
+                                    i.position = final_coordinates
 
-            print("Таких координат не существует")
+                                else:
 
+                                    print("На пути преграда")
+                            
+                            elif figure_on_final_coordinates != None:
+
+                                if i.color != figure_on_final_coordinates.color:
+
+                                    i.position = final_coordinates
+                                    print("Взятие фигуры")
+
+                                else:
+
+                                    print("Ход невозможен")
+
+
+
+    def is_path_clear(self, initial, final):
+
+        x = initial[0]
+        y = initial[1]
+
+        step = 1 if final[1] > initial[1] else -1
+
+        for current_y in range(initial[1] + step, final[1], step):
+
+            position = [x, current_y]
+
+            for i in self.figures:
+
+                if i.position == position:
+
+                    return False
+
+        return True
+
+              
 
 
     def __repr__(self):
